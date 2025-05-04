@@ -61,7 +61,7 @@ A simple demo that includes:
 
    • **backend**
      – mounts `configmap-backend` at `/app/index.js`
-     – runs Express (image `brakmic/express:latest` by default)
+     – runs Express
 
 3. **Services**
 
