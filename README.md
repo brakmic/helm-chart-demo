@@ -1,6 +1,11 @@
 # Helm Chart Demo
 
-A full-stack demo: a static NGINX front-end + a Node.js/Express back-end, packaged as a Helm chart, with GitHub Actions & local testing via **act**.
+A simple demo that includes:
+
+- a static NGINX front-end  
+- a Node.js/Express back-end  
+- GitHub Actions CI/CD with local testing via **act**  
+- everything packaged as a Helm chart
 
 ---
 
@@ -43,23 +48,31 @@ A full-stack demo: a static NGINX front-end + a Node.js/Express back-end, packag
 ## 🚀 What the Chart Deploys
 
 1. **ConfigMaps**
+
    • `configmap-frontend` – embeds `files/html/index.html` & `favicon.ico`
+
    • `configmap-backend` – embeds `files/api/index.js`
 
 2. **Deployments**
+
    • **frontend**
      – mounts `configmap-frontend` at `/usr/share/nginx/html`
      – serves a static web page
+
    • **backend**
      – mounts `configmap-backend` at `/app/index.js`
      – runs Express (image `brakmic/express:latest` by default)
 
 3. **Services**
+
    • `service-frontend` (port 80 → 80)
+
    • `service-backend` (port `.Values.api.port` → same)
 
 4. **Ingress**
+
    • Hosts both `/api/*` → backend service
+
    • and `/*` → frontend service
 
 ---
