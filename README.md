@@ -2,10 +2,27 @@
 
 A simple demo that includes:
 
-- a static NGINX front-end  
-- a Node.js/Express back-end  
+- a static NGINX frontend
+- a Node.js/Express backend
 - GitHub Actions CI/CD with local testing via **act**  
 - everything packaged as a Helm chart
+
+---
+
+## 📑 Table of Contents
+
+- [Helm Chart Demo](#helm-chart-demo)
+  - [📑 Table of Contents](#-table-of-contents)
+  - [📁 Project Layout](#-project-layout)
+  - [🚀 What the Chart Deploys](#-what-the-chart-deploys)
+  - [🔄 Template → Values → Runtime Data Flow](#-template--values--runtime-data-flow)
+  - [⚙️ Backend Image \& Dockerfile](#️-backend-image--dockerfile)
+  - [🛠️ Customize the Chart](#️-customize-the-chart)
+  - [📌 Installing with Helm](#-installing-with-helm)
+  - [📦 GitHub Actions Deployment](#-github-actions-deployment)
+  - [🔄 Local GitHub Actions with act](#-local-github-actions-with-act)
+  - [📝 Helpers](#-helpers)
+  - [LICENSE](#license)
 
 ---
 
@@ -146,6 +163,43 @@ To extend or replace:
 
 ---
 
+## 📌 Installing with Helm
+
+You can install or upgrade the chart directly with Helm:
+
+```bash
+helm upgrade --install myapp chart --namespace demo-app --create-namespace
+```
+
+Example output:
+
+```bash
+$ helm upgrade --install myapp chart --namespace demo-app --create-namespace
+Release "myapp" does not exist. Installing it now.
+NAME: myapp
+LAST DEPLOYED: Sun May  4 18:26:48 2025
+NAMESPACE: demo-app
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+```
+
+What this does:
+
+- `upgrade --install`: creates the release if it doesn’t exist, or upgrades it if it does
+- `myapp`: the release name
+- `chart`: path to your chart
+- `--namespace demo-app`: target namespace
+- `--create-namespace`: creates `demo-app` if missing
+
+Once deployed, you can:
+
+- `kubectl get all -n demo-app` to see pods, services, etc.
+- `kubectl port-forward svc/myapp 8080:80 -n demo-app` and browse `http://localhost:8080`
+- Test the API: `curl http://localhost:8080/api/healthz`
+
+---
+
 ## 📦 GitHub Actions Deployment
 
 Workflow: `.github/workflows/deploy.yaml`
@@ -197,3 +251,7 @@ Templates use `_helpers.tpl` to generate consistent names & labels:
 ```
 
 Feel free to inspect & extend!
+
+## LICENSE
+
+[MIT](./LICENSE)
