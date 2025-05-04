@@ -1,0 +1,10 @@
+{
+  "name": "express-instance",
+  "private": true,
+  "version": "1.0.0",
+  "dependencies": {
+    "express": "^5.1.0",
+    "morgan": "^1.10.0",
+    "cors": "^2.8.5"
+  }
+}

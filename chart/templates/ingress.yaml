@@ -1,0 +1,32 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "myapp.fullname" . }}
+  labels:
+    {{ include "myapp.labels" . | nindent 4 }}
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  rules:
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+      {{- if .Values.api.enabled }}
+      # ── 1) api path first ──────────────────────────────────────────────────
+      - path: {{ .Values.api.path }}
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ include "myapp.fullname" . }}-backend
+            port:
+              number: {{ .Values.api.port }}
+      {{- end }}
+      # ── 2) catch-all frontend ─────────────────────────────────────────────
+      - path: {{ .Values.ingress.path }}
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ include "myapp.fullname" . }}-frontend
+            port:
+              number: {{ .Values.service.port }}
+{{- end }}

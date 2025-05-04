@@ -1,0 +1,26 @@
+replicaCount: 1
+
+image:
+  repository: nginx
+  tag: "1.21"
+
+api:
+  enabled: true
+  image:
+    repository: brakmic/express
+    tag: "latest"
+  port: 3000
+  path: "/api"
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: nginx
+  host: myapp.local
+  path: "/"
+
+html:
+  enabled: true

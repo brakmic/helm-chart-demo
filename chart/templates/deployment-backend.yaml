@@ -1,0 +1,38 @@
+{{- if .Values.api.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "myapp.fullname" . }}-backend
+  labels:
+    {{ include "myapp.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "myapp.name" . }}-backend
+  template:
+    metadata:
+      labels:
+        app: {{ include "myapp.name" . }}-backend
+    spec:
+      containers:
+      - name: backend
+        image: "{{ .Values.api.image.repository }}:{{ .Values.api.image.tag }}"
+        ports:
+        - containerPort: {{ .Values.api.port }}
+        env:
+        - name: PORT
+          value: "{{ .Values.api.port }}"
+        - name: BASE_PATH
+          value: "{{ .Values.api.path }}"
+        - name: APP_VERSION
+          value: "{{ .Chart.AppVersion }}"
+        volumeMounts:
+        - name: backend-code
+          mountPath: /app/index.js
+          subPath: index.js
+      volumes:
+      - name: backend-code
+        configMap:
+          name: {{ include "myapp.fullname" . }}-backend-code
+{{- end }}
