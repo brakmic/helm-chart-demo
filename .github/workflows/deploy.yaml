@@ -27,14 +27,15 @@ jobs:
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         run: |
-          echo "$KUBE_CONFIG_DATA" | base64 -d > $HOME/.kube/config
-          chmod 600 $HOME/.kube/config
+          mkdir -p "$HOME/.kube"
+          echo "$KUBE_CONFIG_DATA" | base64 -d > "$HOME/.kube/config"
+          chmod 600 "$HOME/.kube/config"
 
       - name: Helm lint chart
-        run: helm lint app-chart
+        run: helm lint chart
 
       - name: Deploy via Helm
         run: |
-          helm upgrade --install myapp app-chart \
+          helm upgrade --install myapp chart \
             --namespace demo-app --create-namespace \
             --wait --timeout 5m
