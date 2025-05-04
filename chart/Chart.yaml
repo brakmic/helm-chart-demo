@@ -1,6 +1,6 @@
 apiVersion: v2
 name: myapp
-description: A static NGINX front‑end and a Node.js/Express back‑end (brakmic/express)
+description: A static NGINX frontend and a Node.js/Express backend
 type: application
 version: 0.1.0
 appVersion: "1.0.0"
@@ -9,3 +9,4 @@ keywords:
   - express
   - nodejs
   - helm
+icon: https://raw.githubusercontent.com/brakmic/helm-chart-demo/chart/assets/logo.png
