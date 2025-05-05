@@ -1,11 +1,11 @@
-{{- if .Values.api.enabled }}
+{{- if .Values.backend.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "myapp.fullname" . }}-backend-code
+  name: {{ include "myapp.fullname" . }}-backend
   labels:
     {{ include "myapp.labels" . | nindent 4 }}
 data:
   index.js: |-
-{{ tpl (.Files.Get "files/api/index.js") . | nindent 4 }}
+{{ .Files.Get "files/api/index.js" | indent 4 }}
 {{- end }}

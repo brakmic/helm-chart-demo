@@ -1,4 +1,4 @@
-{{- if .Values.api.enabled }}
+{{- if .Values.backend.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -16,23 +16,26 @@ spec:
         app: {{ include "myapp.name" . }}-backend
     spec:
       containers:
-      - name: backend
-        image: "{{ .Values.api.image.repository }}:{{ .Values.api.image.tag }}"
-        ports:
-        - containerPort: {{ .Values.api.port }}
-        env:
-        - name: PORT
-          value: "{{ .Values.api.port }}"
-        - name: BASE_PATH
-          value: "{{ .Values.api.path }}"
-        - name: APP_VERSION
-          value: "{{ .Chart.AppVersion }}"
-        volumeMounts:
-        - name: backend-code
-          mountPath: /app/index.js
-          subPath: index.js
+        - name: backend
+          image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.backend.port }}
+          env:
+            - name: PORT
+              value: "{{ .Values.backend.port }}"
+            - name: BASE_PATH
+              value: "{{ .Values.backend.path }}"
+            - name: APP_VERSION
+              value: "{{ .Chart.AppVersion }}"
+          volumeMounts:
+            - name: backend-index
+              mountPath: /app/index.js
+              subPath: index.js
       volumes:
-      - name: backend-code
-        configMap:
-          name: {{ include "myapp.fullname" . }}-backend-code
+        - name: backend-index
+          configMap:
+            name: {{ include "myapp.fullname" . }}-backend
+            items:
+              - key: index.js
+                path: index.js
 {{- end }}

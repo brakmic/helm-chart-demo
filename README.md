@@ -98,13 +98,19 @@ A simple demo that includes:
 ```js
 ┌────────────────────────────────────────────┐
 │ values.yaml                                │
-│  api.enabled=true                          │
-│  api.port=3000                             │
-│  api.path="/api"                           │
-│  image.repository=nginx                    │
-│  image.tag=1.21                            │
-│  replicaCount=1                            │
+│  replicaCount: 1                           │
+│  frontend.enabled=true                     │
+│  frontend.image.repository=nginx           │
+│  frontend.image.tag="1.21"                 │
+│  frontend.service.port=80                  │
+│  backend.enabled=true                      │
+│  backend.image.repository=brakmic/express  │
+│  backend.image.tag="latest"                │
+│  backend.port=3000                         │
+│  backend.path="/api"                       │
+│  ingress.enabled=true                      │
 │  ingress.host=myapp.local                  │
+│  ingress.path="/"                          │
 └────────────────────────────────────────────┘
                    │
                    ▼
@@ -112,9 +118,9 @@ A simple demo that includes:
 │ chart/templates/                               │
 │  ├─ deployment-backend.yaml                    │
 │  │    env:                                     │
-│  │      PORT:    "{{ .Values.api.port }}"      │
-│  │      BASE_PATH:"{{ .Values.api.path }}"     │
-│  │      MESSAGE: "{{ .Chart.AppVersion }}"     │
+│  │      PORT:    "{{ .Values.backend.port }}"  │
+│  │      BASE_PATH: "{{ .Values.backend.path }}"│
+│  │      APP_VERSION: "{{ .Chart.AppVersion }}" │
 │  ├─ configmap-backend.yaml                     │
 │  │    data.index.js = index.js                 │
 │  ├─ deployment-frontend.yaml                   │
@@ -129,8 +135,8 @@ A simple demo that includes:
 ┌──────────────────────────────────────────────────────┐
 │ Running Pods:                                        │
 │  • Backend: Express reads env vars at runtime        │
-│    – PORT, BASE_PATH, MESSAGE, APP_VERSION           │
-│  • Frontend: static HTML + JS fetches `${BASE_PATH}` │
+│    – PORT, BASE_PATH, APP_VERSION                    │
+│  • Frontend: static HTML + JS fetches `/api`         │
 └──────────────────────────────────────────────────────┘
 ```
 
@@ -146,18 +152,19 @@ index.js                # minimal API server
 package.json            # depends on express, cors, morgan
 ```
 
-By default the chart’s `values.yaml` points `api.image.repository: brakmic/express`.
+By default the chart’s `values.yaml` points to `backend.image.repository: brakmic/express`.
+
 To extend or replace:
 
 - Add NPM packages or tools → modify `Dockerfile.express` & rebuild
-- Or point `.Values.api.image.repository/tag` to your own image
+- Or point `.Values.backend.image.repository/tag` to your own image
 
 ---
 
 ## 🛠️ Customize the Chart
 
 - Override any value in `values.yaml` via `--set` or custom `values-*.yaml`
-- Enable/disable `api`, `html`, `ingress` sections
+- Enable/disable `frontend`, `backend`, `ingress` sections
 - Change replica count, image tags, ports, paths, etc.
 
 ---

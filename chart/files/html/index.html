@@ -8,7 +8,7 @@
   <body>
     <h1>Hello, World!</h1>
     <script>
-      fetch('{{ .Values.api.path }}')
+      fetch('{{ .Values.backend.path }}')
         .then(r => r.json())
         .then(d => {
           const pre = document.createElement('pre');
