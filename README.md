@@ -225,7 +225,14 @@ Workflow: `.github/workflows/deploy.yaml`
    ./scripts/create-secret-env.sh
    # writes ~/.secrets.env with:
    # KUBE_CONFIG_DATA=<base64 of ~/.kube/config>
-   ```
+
+
+   - Add `act` to your PATH:
+
+      ```bash
+      export PATH=$HOME/bin:$PATH
+      ```
+
 
 - Run the deploy job locally:
 
