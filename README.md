@@ -227,12 +227,11 @@ Workflow: `.github/workflows/deploy.yaml`
    # KUBE_CONFIG_DATA=<base64 of ~/.kube/config>
 
 
-   - Add `act` to your PATH:
+- Add `act` to your PATH:
 
-      ```bash
-      export PATH=$HOME/bin:$PATH
-      ```
-
+   ```bash
+   export PATH=$HOME/bin:$PATH
+   ```
 
 - Run the deploy job locally:
 
