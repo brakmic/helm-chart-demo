@@ -47,7 +47,6 @@ A simple demo that includes:
 │   │   ├── service-backend.yaml
 │   │   └── service-frontend.yaml
 │   └── values.yaml
-├── config.local
 ├── LICENSE
 ├── README.md
 ├── scripts
